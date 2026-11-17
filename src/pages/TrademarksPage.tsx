@@ -1321,6 +1321,9 @@ export const TrademarksPage: React.FC = () => {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 mb-3">
+                    Nigeria has 45 trademark classes, covering goods and services. Applications are made and charged separately for each class.
+                  </p>
                   <h3 className="text-lg sm:text-xl font-bold text-brand-dark">
                     Trademark Classes
                   </h3>
