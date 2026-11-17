@@ -5,7 +5,6 @@ import { CountryFlag } from '../components/common/CountryFlag';
 import {
   TRADEMARK_CLASSES_CATALOGUE,
   TRADEMARK_PROCESS_STAGES,
-  countWords,
   DRAFT_TRADEMARK_PRIVACY_STATEMENT,
   TRADEMARK_CLASSIFICATION_NOTICE,
 } from '../config/trademarks/trademarkData';
@@ -400,6 +399,199 @@ const ClassSearchDropdown: React.FC<ClassSearchDropdownProps> = ({
   );
 };
 
+interface DropdownOption<T extends string> {
+  value: T;
+  label: string;
+  description: string;
+}
+
+const APPLICANT_TYPE_OPTIONS: DropdownOption<'individual' | 'company'>[] = [
+  {
+    value: 'individual',
+    label: 'An individual',
+    description: 'Natural person(s) registering in their personal capacity as the trademark owner.',
+  },
+  {
+    value: 'company',
+    label: 'A company',
+    description: 'Registered corporate body, LLC, enterprise, or incorporated organization.',
+  },
+];
+
+const APPLICATION_RELATIONSHIP_OPTIONS: DropdownOption<'self' | 'representative'>[] = [
+  {
+    value: 'self',
+    label: 'Myself / my company',
+    description: 'Direct owner, officer, or authorized director applying for own brand assets.',
+  },
+  {
+    value: 'representative',
+    label: 'On behalf of someone else',
+    description: 'External representative, attorney, agent, or advisor applying for a client.',
+  },
+];
+
+const CLASS_DETERMINATION_OPTIONS: DropdownOption<'configure' | 'recommend'>[] = [
+  {
+    value: 'configure',
+    label: 'Configure per mark',
+    description:
+      'Select classes for each mark below using the searchable dropdown.',
+  },
+  {
+    value: 'recommend',
+    label: 'Recommend for all marks',
+    description:
+      "Mustarred's intellectual property counsel will evaluate your business activities and determine all appropriate statutory Nice classes across all your marks.",
+  },
+];
+
+interface TrademarkQuestionDropdownProps<T extends string> {
+  id: string;
+  label: string;
+  subtitle?: string;
+  required?: boolean;
+  placeholder?: string;
+  value: T | '';
+  options: DropdownOption<T>[];
+  onChange: (value: T) => void;
+  error?: boolean;
+}
+
+function TrademarkQuestionDropdown<T extends string>({
+  id,
+  label,
+  subtitle,
+  required,
+  placeholder = 'Select an option...',
+  value,
+  options,
+  onChange,
+  error,
+}: TrademarkQuestionDropdownProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const selectedOption = options.find((o) => o.value === value);
+
+  return (
+    <div className="space-y-1.5 text-left" ref={containerRef}>
+      <div>
+        <label htmlFor={id} className="block text-xs font-semibold text-slate-800">
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+        {subtitle && (
+          <p className="text-[11px] text-slate-500 mt-0.5">{subtitle}</p>
+        )}
+      </div>
+
+      <div className="relative">
+        <button
+          id={id}
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen(!isOpen)}
+          className={`w-full px-4 py-3 rounded-xl border-2 text-left transition-all duration-150 flex items-center justify-between gap-3 bg-white outline-none focus:ring-2 focus:ring-brand-purple/20 ${
+            error
+              ? 'border-red-300 bg-red-50/40'
+              : isOpen
+              ? 'border-brand-purple shadow-xs ring-1 ring-brand-purple'
+              : 'border-slate-200 hover:border-brand-purple/50'
+          }`}
+        >
+          <div className="min-w-0 flex-1">
+            {selectedOption ? (
+              <span className="text-sm font-semibold text-brand-dark block truncate">
+                {selectedOption.label}
+              </span>
+            ) : (
+              <span className="text-sm text-slate-400 block truncate">
+                {placeholder}
+              </span>
+            )}
+          </div>
+          <svg
+            className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+              isOpen ? 'rotate-180 text-brand-purple' : ''
+            }`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute z-30 left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden py-1 max-h-72 overflow-y-auto"
+          >
+            {options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <li
+                  key={opt.value}
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`px-4 py-3 cursor-pointer transition-colors flex items-start justify-between gap-3 ${
+                    isSelected
+                      ? 'bg-brand-purple-light/50 text-brand-purple'
+                      : 'hover:bg-slate-50 text-slate-700'
+                  }`}
+                >
+                  <div className="space-y-0.5 min-w-0">
+                    <span className="text-sm font-semibold text-brand-dark block">
+                      {opt.label}
+                    </span>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      {opt.description}
+                    </p>
+                  </div>
+                  <div
+                    className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
+                      isSelected
+                        ? 'border-brand-purple bg-brand-purple text-white'
+                        : 'border-slate-300 bg-white'
+                    }`}
+                  >
+                    {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+
+      {selectedOption && (
+        <p className="text-xs text-slate-500 pt-0.5 pl-1 leading-relaxed">
+          {selectedOption.description}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export const TrademarksPage: React.FC = () => {
   const { selectedCountry, setSelectedCountryCode } = useCountry();
   const { navigate } = useNavigation();
@@ -436,9 +628,9 @@ export const TrademarksPage: React.FC = () => {
   // General Validation
   const [validationError, setValidationError] = useState('');
 
-  // ── Word Counter ────────────────────────────────────────────────────────────
-  const currentWordCount = countWords(goodsServicesDescription);
-  const isWordCountSufficient = currentWordCount >= 50;
+  // ── Character Counter ───────────────────────────────────────────────────────
+  const currentCharCount = goodsServicesDescription.trim().length;
+  const isCharCountSufficient = currentCharCount >= 50;
 
   // ── Mark Identifiers for Class Mapping ──────────────────────────────────────
   const activeMarks: { id: string; label: string; type: 'word' | 'logo' }[] = [];
@@ -559,34 +751,6 @@ export const TrademarksPage: React.FC = () => {
     setValidationError('');
   };
 
-  const handleToggleReviewForMark = (markId: string) => {
-    setMarkClassSelections((prev) => {
-      const current = prev[markId] || { classes: [], isUnsure: false };
-      return {
-        ...prev,
-        [markId]: {
-          ...current,
-          requestReview: !current.requestReview,
-        },
-      };
-    });
-    setValidationError('');
-  };
-
-  const handleSetApproachForMark = (markId: string, approach: 'choose' | 'recommend') => {
-    setMarkClassSelections((prev) => {
-      const current = prev[markId] || { classes: [], isUnsure: false };
-      return {
-        ...prev,
-        [markId]: {
-          ...current,
-          isUnsure: approach === 'recommend',
-        },
-      };
-    });
-    setValidationError('');
-  };
-
   // ── Step Navigation ─────────────────────────────────────────────────────────
   const handleStartAssessment = () => {
     setValidationError('');
@@ -632,9 +796,9 @@ export const TrademarksPage: React.FC = () => {
         }
       }
 
-      if (!isWordCountSufficient) {
+      if (!isCharCountSufficient) {
         setValidationError(
-          `Please provide a practical description of your goods or services (at least 50 words). Current: ${currentWordCount} words.`
+          `Please provide a practical description of your goods or services (at least 50 characters). Current: ${currentCharCount} characters.`
         );
         return;
       }
@@ -838,12 +1002,6 @@ export const TrademarksPage: React.FC = () => {
               </div>
             </div>
           )}
-
-          {/* Statutory Reference Footer */}
-          <div className="border-t border-slate-100 pt-5 text-xs text-slate-500 leading-relaxed">
-            <span className="font-semibold text-slate-700">Official Filing Notice: </span>
-            Statutory trademark registration confers exclusive territorial rights. Preliminary search clearance and class specification must be confirmed by accredited IP legal representatives before registry lodgement.
-          </div>
         </div>
       )}
 
@@ -888,144 +1046,34 @@ export const TrademarksPage: React.FC = () => {
                 </div>
 
                 {/* Question 1: Who are you registering the trademark for? */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-semibold text-slate-800">
-                    1. Who are you registering the trademark for? <span className="text-red-500">*</span>
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setApplicantType('individual');
-                        setValidationError('');
-                      }}
-                      className={`p-4 rounded-xl border text-left transition-all flex items-start justify-between gap-3 ${
-                        applicantType === 'individual'
-                          ? 'border-brand-purple bg-brand-purple-light/40 ring-1 ring-brand-purple shadow-2xs'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60'
-                      }`}
-                    >
-                      <div className="space-y-0.5">
-                        <span className="text-sm font-semibold text-brand-dark block">An individual</span>
-                        <p className="text-xs text-slate-500">
-                          Natural person(s) registering in their personal capacity as the trademark owner.
-                        </p>
-                      </div>
-                      <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                          applicantType === 'individual'
-                            ? 'border-brand-purple bg-brand-purple text-white'
-                            : 'border-slate-300 bg-white'
-                        }`}
-                      >
-                        {applicantType === 'individual' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setApplicantType('company');
-                        setValidationError('');
-                      }}
-                      className={`p-4 rounded-xl border text-left transition-all flex items-start justify-between gap-3 ${
-                        applicantType === 'company'
-                          ? 'border-brand-purple bg-brand-purple-light/40 ring-1 ring-brand-purple shadow-2xs'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60'
-                      }`}
-                    >
-                      <div className="space-y-0.5">
-                        <span className="text-sm font-semibold text-brand-dark block">A company</span>
-                        <p className="text-xs text-slate-500">
-                          Registered corporate body, LLC, enterprise, or incorporated organization.
-                        </p>
-                      </div>
-                      <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                          applicantType === 'company'
-                            ? 'border-brand-purple bg-brand-purple text-white'
-                            : 'border-slate-300 bg-white'
-                        }`}
-                      >
-                        {applicantType === 'company' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                      </div>
-                    </button>
-                  </div>
-                </div>
+                <TrademarkQuestionDropdown
+                  id="applicant-type-select"
+                  label="1. Who are you registering the trademark for?"
+                  required
+                  placeholder="Select who you are registering for..."
+                  value={applicantType}
+                  options={APPLICANT_TYPE_OPTIONS}
+                  onChange={(val) => {
+                    setApplicantType(val);
+                    setValidationError('');
+                  }}
+                  error={Boolean(validationError && !applicantType)}
+                />
 
                 {/* Question 2: Who is making the application? */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-semibold text-slate-800">
-                    2. Who is making the application? <span className="text-red-500">*</span>
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setApplicationRelationship('self');
-                        setValidationError('');
-                      }}
-                      className={`p-4 rounded-xl border text-left transition-all flex items-start justify-between gap-3 ${
-                        applicationRelationship === 'self'
-                          ? 'border-brand-purple bg-brand-purple-light/40 ring-1 ring-brand-purple shadow-2xs'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60'
-                      }`}
-                    >
-                      <div className="space-y-0.5">
-                        <span className="text-sm font-semibold text-brand-dark block">
-                          Myself / my company
-                        </span>
-                        <p className="text-xs text-slate-500">
-                          Direct owner, officer, or authorized director applying for own brand assets.
-                        </p>
-                      </div>
-                      <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                          applicationRelationship === 'self'
-                            ? 'border-brand-purple bg-brand-purple text-white'
-                            : 'border-slate-300 bg-white'
-                        }`}
-                      >
-                        {applicationRelationship === 'self' && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                        )}
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setApplicationRelationship('representative');
-                        setValidationError('');
-                      }}
-                      className={`p-4 rounded-xl border text-left transition-all flex items-start justify-between gap-3 ${
-                        applicationRelationship === 'representative'
-                          ? 'border-brand-purple bg-brand-purple-light/40 ring-1 ring-brand-purple shadow-2xs'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60'
-                      }`}
-                    >
-                      <div className="space-y-0.5">
-                        <span className="text-sm font-semibold text-brand-dark block">
-                          On behalf of someone else
-                        </span>
-                        <p className="text-xs text-slate-500">
-                          External representative, attorney, agent, or advisor applying for a client.
-                        </p>
-                      </div>
-                      <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                          applicationRelationship === 'representative'
-                            ? 'border-brand-purple bg-brand-purple text-white'
-                            : 'border-slate-300 bg-white'
-                        }`}
-                      >
-                        {applicationRelationship === 'representative' && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                        )}
-                      </div>
-                    </button>
-                  </div>
-                </div>
+                <TrademarkQuestionDropdown
+                  id="application-relationship-select"
+                  label="2. Who is making the application?"
+                  required
+                  placeholder="Select who is making the application..."
+                  value={applicationRelationship}
+                  options={APPLICATION_RELATIONSHIP_OPTIONS}
+                  onChange={(val) => {
+                    setApplicationRelationship(val);
+                    setValidationError('');
+                  }}
+                  error={Boolean(validationError && !applicationRelationship)}
+                />
 
                 {/* Explanatory Guidance Box */}
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 text-xs text-slate-600 space-y-1">
@@ -1102,7 +1150,7 @@ export const TrademarksPage: React.FC = () => {
                       }`}
                     >
                       <span className="font-semibold text-sm text-brand-dark block">Both</span>
-                      <p className="text-xs text-slate-500 mt-0.5">Separate word names and visual logo files.</p>
+                      <p className="text-xs text-slate-500 mt-0.5">A combination of word and logo design</p>
                     </button>
                   </div>
                 </div>
@@ -1114,13 +1162,15 @@ export const TrademarksPage: React.FC = () => {
                       <label className="text-xs font-semibold text-slate-800">
                         Wordmark Name(s) <span className="text-red-500">*</span>
                       </label>
-                      <button
-                        type="button"
-                        onClick={handleAddWord}
-                        className="text-xs font-semibold text-brand-purple hover:text-brand-purple-hover inline-flex items-center gap-1"
-                      >
-                        <span>+ Add another word</span>
-                      </button>
+                      {words.some((w) => w.trim() !== '') && (
+                        <button
+                          type="button"
+                          onClick={handleAddWord}
+                          className="text-xs font-semibold text-brand-purple hover:text-brand-purple-hover inline-flex items-center gap-1"
+                        >
+                          <span>+ Add another word</span>
+                        </button>
+                      )}
                     </div>
 
                     <div className="space-y-2.5">
@@ -1159,13 +1209,15 @@ export const TrademarksPage: React.FC = () => {
                       <label className="text-xs font-semibold text-slate-800">
                         Logo / Design Attachments <span className="text-red-500">*</span>
                       </label>
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="text-xs font-semibold text-brand-purple hover:text-brand-purple-hover inline-flex items-center gap-1"
-                      >
-                        <span>+ Upload another logo/design</span>
-                      </button>
+                      {logos.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="text-xs font-semibold text-brand-purple hover:text-brand-purple-hover inline-flex items-center gap-1"
+                        >
+                          <span>+ Upload another logo/design</span>
+                        </button>
+                      )}
                     </div>
 
                     <input
@@ -1234,18 +1286,21 @@ export const TrademarksPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <label className="block text-xs font-semibold text-slate-800">
                       What goods or services will your trademark cover? <span className="text-red-500">*</span>
+                      <span className="text-slate-500 font-normal ml-1.5">(50 character minimum)</span>
                     </label>
-                    <span
-                      className={`text-xs font-semibold ${
-                        isWordCountSufficient ? 'text-emerald-700' : 'text-amber-700'
-                      }`}
-                    >
-                      {currentWordCount} / 50 words minimum
-                    </span>
+                    {currentCharCount > 0 && (
+                      <span
+                        className={`text-xs font-semibold ${
+                          isCharCountSufficient ? 'text-emerald-700' : 'text-amber-700'
+                        }`}
+                      >
+                        {currentCharCount} / 50 characters
+                      </span>
+                    )}
                   </div>
 
                   <p className="text-xs text-slate-500 leading-relaxed">
-                    Please describe the products or services you want to protect in at least 50 words. This is a Mustarred intake requirement to help our team understand your business and assess the appropriate trademark classes. It is not a statutory minimum imposed by the Nigerian Trademarks Registry.
+                    Please describe the products or services you want to protect in at least 50 characters. Please be clear and precise as this will help our team understand your business and access the appropriate trademark classes.
                   </p>
 
                   <textarea
@@ -1274,98 +1329,29 @@ export const TrademarksPage: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Regulatory Classification Status Notice */}
-                <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-amber-950 text-xs space-y-2 leading-relaxed">
-                  <div className="flex items-center gap-2 font-semibold text-amber-900">
-                    <svg
-                      className="w-4 h-4 shrink-0 text-amber-700"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Classification Reference Guidance (Nice Classification 13th Edition, 2026)</span>
-                  </div>
-                  <p>
-                    The international Nice Classification system organizes marks into 45 distinct classes:
-                  </p>
-                  <ul className="list-disc list-inside space-y-0.5 pl-1 text-[11px] text-amber-900">
-                    <li>
-                      <strong className="font-semibold">Goods (Classes 1–34):</strong> Tangible items, manufactured products, technology hardware, materials, and commodities.
-                    </li>
-                    <li>
-                      <strong className="font-semibold">Services (Classes 35–45):</strong> Commercial services, technology platforms, advertising, financial, consulting, and operational activities.
-                    </li>
-                  </ul>
-                  <p className="text-[11px] text-amber-800/90 pt-0.5">
-                    {TRADEMARK_CLASSIFICATION_NOTICE}
-                  </p>
-                </div>
+                {/* How would you like to determine your classes? Dropdown */}
+                <TrademarkQuestionDropdown<'configure' | 'recommend'>
+                  id="class-determination-dropdown"
+                  label="How would you like to determine your classes?"
+                  subtitle="Choose classes yourself, request our legal recommendation, or combine both approaches."
+                  value={globalUnsureClasses ? 'recommend' : 'configure'}
+                  options={CLASS_DETERMINATION_OPTIONS}
+                  onChange={(val) => {
+                    setGlobalUnsureClasses(val === 'recommend');
+                    setValidationError('');
+                  }}
+                />
 
-                {/* Two Complementary Approaches Preference */}
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                    <div>
-                      <span className="font-semibold text-xs text-slate-900 block">
-                        How would you like to determine your classes?
-                      </span>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
-                        Choose classes yourself, request our legal recommendation, or combine both approaches.
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setGlobalUnsureClasses(false);
-                          setValidationError('');
-                        }}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                          !globalUnsureClasses
-                            ? 'bg-brand-purple text-white border-brand-purple shadow-2xs'
-                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                        }`}
-                      >
-                        Configure per mark
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setGlobalUnsureClasses(true);
-                          setValidationError('');
-                        }}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                          globalUnsureClasses
-                            ? 'bg-brand-purple text-white border-brand-purple shadow-2xs'
-                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                        }`}
-                      >
-                        Recommend for all marks
-                      </button>
-                    </div>
-                  </div>
-
-                  {globalUnsureClasses ? (
-                    <div className="p-3 rounded-lg bg-brand-purple-light/40 border border-brand-purple-border/70 text-xs text-brand-dark space-y-1">
-                      <span className="font-semibold text-brand-purple block">
-                        Full Legal Recommendation Requested
-                      </span>
-                      <p className="text-slate-600 text-[11px] leading-relaxed">
-                        Mustarred's intellectual property counsel will review your 50+ word goods/services description and evaluate your business activities to determine all appropriate statutory Nice classes across all your marks. No manual class selection is required.
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-[11px] text-slate-500 leading-relaxed border-t border-slate-200/80 pt-2">
-                      You can select classes for each mark below using the searchable dropdown, and optionally request attorney review of your chosen classes. You may also request recommendations for individual marks.
+                {globalUnsureClasses && (
+                  <div className="p-4 rounded-xl bg-brand-purple-light/40 border border-brand-purple-border/70 text-xs text-brand-dark space-y-1">
+                    <span className="font-semibold text-brand-purple block">
+                      Full Legal Recommendation Requested
+                    </span>
+                    <p className="text-slate-600 text-[11px] leading-relaxed">
+                      Mustarred's intellectual property counsel will review your goods/services description and evaluate your business activities to determine all appropriate statutory Nice classes across all your marks. No manual class selection is required.
                     </p>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {/* Per-Mark Class Selectors (when not globalUnsureClasses) */}
                 {!globalUnsureClasses && activeMarks.length > 0 && (
@@ -1394,119 +1380,16 @@ export const TrademarksPage: React.FC = () => {
                             </span>
                           </div>
 
-                          {/* Dual Approach Options for this mark */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            {/* Option 1: I'll choose my classes */}
-                            <button
-                              type="button"
-                              onClick={() => handleSetApproachForMark(mark.id, 'choose')}
-                              className={`p-3 rounded-xl border text-left transition-all flex items-start gap-2.5 ${
-                                !markConfig.isUnsure
-                                  ? 'border-brand-purple bg-brand-purple-light/30 ring-1 ring-brand-purple shadow-2xs'
-                                  : 'border-slate-200 bg-slate-50/60 hover:bg-slate-50'
-                              }`}
-                            >
-                              <div
-                                className={`mt-0.5 w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
-                                  !markConfig.isUnsure
-                                    ? 'border-brand-purple bg-brand-purple text-white'
-                                    : 'border-slate-300 bg-white'
-                                }`}
-                              >
-                                {!markConfig.isUnsure && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                              </div>
-                              <div>
-                                <span className="text-xs font-semibold text-slate-900 block">
-                                  I'll choose my classes
-                                </span>
-                                <span className="text-[11px] text-slate-500 mt-0.5 block leading-normal">
-                                  Search and select from Nice Classes 1–45.
-                                </span>
-                              </div>
-                            </button>
-
-                            {/* Option 2: Help me find the right classes */}
-                            <button
-                              type="button"
-                              onClick={() => handleSetApproachForMark(mark.id, 'recommend')}
-                              className={`p-3 rounded-xl border text-left transition-all flex items-start gap-2.5 ${
-                                markConfig.isUnsure
-                                  ? 'border-brand-purple bg-brand-purple-light/30 ring-1 ring-brand-purple shadow-2xs'
-                                  : 'border-slate-200 bg-slate-50/60 hover:bg-slate-50'
-                              }`}
-                            >
-                              <div
-                                className={`mt-0.5 w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
-                                  markConfig.isUnsure
-                                    ? 'border-brand-purple bg-brand-purple text-white'
-                                    : 'border-slate-300 bg-white'
-                                }`}
-                              >
-                                {markConfig.isUnsure && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                              </div>
-                              <div>
-                                <span className="text-xs font-semibold text-slate-900 block">
-                                  Help me find the right classes
-                                </span>
-                                <span className="text-[11px] text-slate-500 mt-0.5 block leading-normal">
-                                  Mustarred recommends classes from your description.
-                                </span>
-                              </div>
-                            </button>
+                          {/* Class Configuration for this mark */}
+                          <div className="space-y-3.5">
+                            {/* Searchable Dropdown */}
+                            <ClassSearchDropdown
+                              markId={mark.id}
+                              selectedClasses={markConfig.classes}
+                              onToggleClass={(classNum) => handleToggleClassForMark(mark.id, classNum)}
+                              onClearClasses={() => handleClearClassesForMark(mark.id)}
+                            />
                           </div>
-
-                          {/* Selected Approach View */}
-                          {!markConfig.isUnsure ? (
-                            <div className="space-y-3.5 pt-1">
-                              {/* Searchable Dropdown */}
-                              <ClassSearchDropdown
-                                markId={mark.id}
-                                selectedClasses={markConfig.classes}
-                                onToggleClass={(classNum) => handleToggleClassForMark(mark.id, classNum)}
-                                onClearClasses={() => handleClearClassesForMark(mark.id)}
-                              />
-
-                              {/* Request Professional Review Checkbox (Combining self-selection + review) */}
-                              <label className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50/80 border border-slate-200 cursor-pointer hover:bg-slate-100/60 transition-colors">
-                                <input
-                                  type="checkbox"
-                                  checked={Boolean(markConfig.requestReview)}
-                                  onChange={() => handleToggleReviewForMark(mark.id)}
-                                  className="mt-0.5 w-4 h-4 accent-brand-purple rounded shrink-0 cursor-pointer"
-                                />
-                                <div className="text-xs space-y-0.5">
-                                  <span className="font-semibold text-slate-900 block">
-                                    Request attorney review of these selections
-                                  </span>
-                                  <span className="text-slate-500 text-[11px] leading-normal block">
-                                    Have Mustarred's trademark counsel review your selected classes against your 50+ word goods/services description to verify applicability and recommend any complementary classes.
-                                  </span>
-                                </div>
-                              </label>
-                            </div>
-                          ) : (
-                            <div className="p-4 rounded-xl bg-purple-50/60 border border-purple-200/80 text-xs text-brand-dark space-y-1.5">
-                              <div className="flex items-center gap-1.5 font-semibold text-brand-purple">
-                                <svg
-                                  className="w-4 h-4 shrink-0"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                  />
-                                </svg>
-                                <span>Mustarred Class Recommendation Requested</span>
-                              </div>
-                              <p className="text-slate-600 leading-relaxed text-[11px]">
-                                Our trademark legal team will review your goods and services description from Step 2 and recommend the statutory Nice classes suited to this mark. No prior classification knowledge is required.
-                              </p>
-                            </div>
-                          )}
                         </div>
                       );
                     })}
@@ -1706,7 +1589,7 @@ export const TrademarksPage: React.FC = () => {
                   {/* Description preview */}
                   <div className="pt-1.5 border-t border-slate-200/60 space-y-0.5">
                     <span className="text-slate-400 block font-medium">
-                      Goods &amp; Services ({currentWordCount} words):
+                      Goods &amp; Services ({currentCharCount} characters):
                     </span>
                     <p className="text-slate-600 line-clamp-2 italic">
                       "{goodsServicesDescription}"
