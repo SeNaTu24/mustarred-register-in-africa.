@@ -1442,12 +1442,7 @@ export const TrademarksPage: React.FC = () => {
                                     </div>
 
                                     <p className="text-xs text-slate-500 leading-relaxed">
-                                        Please describe the products or services
-                                        you want to protect in at least 50
-                                        characters. Be clear and precise as this
-                                        will help our team understand your
-                                        business and access the appropriate
-                                        trademark classes.
+                                        Please describe the products or services you want to protect in at least 50 characters. Be clear and precise as this will help our team understand your business and access the appropriate trademark classes.
                                     </p>
 
                                     <textarea
@@ -1868,12 +1863,10 @@ export const TrademarksPage: React.FC = () => {
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="text-lg sm:text-xl font-bold text-brand-dark">
-                                        Our Trademark Registration Process
+                                        Familiarise yourself with our process
                                     </h3>
                                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                                        A clear overview of the statutory
-                                        process from initial preliminary intake
-                                        to final certificate issuance.
+                                        Understand how we will handle your engagement so you stay informed throughout the process
                                     </p>
                                 </div>
 
@@ -1888,7 +1881,6 @@ export const TrademarksPage: React.FC = () => {
                                             </div>
                                             <div className="space-y-1">
                                                 <h4 className="text-sm font-bold text-brand-dark">
-                                                    Stage {stage.stepNumber}:{" "}
                                                     {stage.title}
                                                 </h4>
                                                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -1898,33 +1890,18 @@ export const TrademarksPage: React.FC = () => {
                                         </div>
                                     ))}
                                 </div>
-
-                                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 text-xs text-slate-500 leading-relaxed">
-                                    <span className="font-semibold text-slate-700 block mb-0.5">
-                                        Statutory Timelines &amp; Examination
-                                        Note:
-                                    </span>
-                                    Registry examination, journal publication
-                                    windows, and certificate processing are
-                                    governed strictly by the Trademarks Registry
-                                    (FMITI in Nigeria). Turnaround times and
-                                    outcomes cannot be guaranteed prior to
-                                    formal registry examination.
-                                </div>
                             </div>
                         )}
 
-                        {/* ── STEP 5: Request Assistance ───────────────────────────── */}
+                        {/* ── STEP 5: Get Started ───────────────────────────── */}
                         {currentStep === 5 && (
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="text-lg sm:text-xl font-bold text-brand-dark">
-                                        Request Assistance
+                                        Get started
                                     </h3>
                                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                                        Provide your contact details. Your
-                                        complete trademark specification will be
-                                        packaged directly for our legal team.
+                                        If you are ready to proceed, please fill the form below so that a professional may contact you regarding your application.
                                     </p>
                                 </div>
 
@@ -2093,7 +2070,7 @@ export const TrademarksPage: React.FC = () => {
                                     >
                                         <div>
                                             <label className="block text-xs font-semibold text-slate-800 mb-1">
-                                                Full Name{" "}
+                                                Name{" "}
                                                 <span className="text-red-500">
                                                     *
                                                 </span>
@@ -2101,7 +2078,7 @@ export const TrademarksPage: React.FC = () => {
                                             <input
                                                 type="text"
                                                 required
-                                                placeholder="Full name"
+                                                placeholder="Name"
                                                 value={contactName}
                                                 onChange={(e) => {
                                                     setContactName(
@@ -2116,7 +2093,7 @@ export const TrademarksPage: React.FC = () => {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                             <div>
                                                 <label className="block text-xs font-semibold text-slate-800 mb-1">
-                                                    Email Address{" "}
+                                                    Email{" "}
                                                     <span className="text-red-500">
                                                         *
                                                     </span>
@@ -2124,7 +2101,7 @@ export const TrademarksPage: React.FC = () => {
                                                 <input
                                                     type="email"
                                                     required
-                                                    placeholder="Email address"
+                                                    placeholder="Email"
                                                     value={contactEmail}
                                                     onChange={(e) => {
                                                         setContactEmail(
@@ -2138,7 +2115,7 @@ export const TrademarksPage: React.FC = () => {
 
                                             <div>
                                                 <label className="block text-xs font-semibold text-slate-800 mb-1">
-                                                    Phone Number{" "}
+                                                    Phone number{" "}
                                                     <span className="text-red-500">
                                                         *
                                                     </span>
@@ -2182,7 +2159,7 @@ export const TrademarksPage: React.FC = () => {
                                                 type="submit"
                                                 className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-brand-purple hover:bg-brand-purple-hover shadow-xs transition-all"
                                             >
-                                                Submit Trademark Request →
+                                                Get Started →
                                             </button>
                                         </div>
                                     </form>
@@ -2212,7 +2189,7 @@ export const TrademarksPage: React.FC = () => {
                                     className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-brand-purple hover:bg-brand-purple-hover shadow-xs transition-all"
                                 >
                                     {currentStep === 4
-                                        ? "Continue to Request Assistance →"
+                                        ? "Continue to Get Started →"
                                         : "Continue →"}
                                 </button>
                             </div>

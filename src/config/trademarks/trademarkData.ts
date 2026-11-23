@@ -355,39 +355,39 @@ export const TRADEMARK_CLASSES_CATALOGUE: TrademarkClassDefinition[] = [
 export const TRADEMARK_PROCESS_STAGES: TrademarkProcessStage[] = [
   {
     stepNumber: 1,
-    title: 'Enquiry and Preliminary Assessment',
+    title: 'Enquiry and preliminary assessment',
     shortDescription:
-      'Initial evaluation of the proposed mark, intended commercial use, applicant status, and potential classification scope.',
+      'You describe your business and provide your preferred mark(s) using this portal. Our professional will reach out to you for any confirmation promptly.',
   },
   {
     stepNumber: 2,
     title: 'Engagement',
     shortDescription:
-      'Formal legal engagement, execution of professional terms of representation, and Power of Attorney authorization.',
+      'We agree on the scope of work and pricing, execute engagement terms and further discuss your application where necessary.',
   },
   {
     stepNumber: 3,
-    title: 'Trademark Search',
+    title: 'Search',
     shortDescription:
-      'Official clearance search conducted against registry records to identify conflicting prior registrations or pending marks.',
+      'We conduct a search at the Trademark Registry to ensure there are no conflicts or registrability concerns.',
   },
   {
     stepNumber: 4,
-    title: 'Initial Filing',
+    title: 'Initial filing',
     shortDescription:
-      'Formal submission of the application to the Trademarks Registry and receipt of the official Acknowledgement Form.',
+      'We file the initial application, obtain the acceptance letter(s) and ensure publication or advise on oppositions, if any.',
   },
   {
     stepNumber: 5,
-    title: 'Examination and Acceptance',
+    title: 'Further filing',
     shortDescription:
-      'Substantive examination by registry examiners, addressing official queries, and issuance of the official Acceptance Letter.',
+      'Using the acceptance letters, we will apply for the trademark certificates. This is optional but advisable so you have proof of ownership readily available.',
   },
   {
     stepNumber: 6,
-    title: 'Publication, Opposition and Registration',
+    title: 'Certificate completion',
     shortDescription:
-      'Publication in the Federal Trademarks Journal, monitoring the statutory opposition window, and sealing the Certificate of Registration.',
+      'We obtain the final certificate and provide some post-registration support like advice on appropriate use and validity.',
   },
 ];
 
