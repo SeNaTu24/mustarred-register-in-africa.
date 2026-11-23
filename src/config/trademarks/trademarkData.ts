@@ -401,8 +401,7 @@ export function countWords(text: string): number {
 }
 
 /**
- * Draft Privacy Statement for trademark intake.
- * Explicitly marked as pending official legal finalization.
+ * Trademark privacy notice in compliance with NDPA 2023 and GAID 2025.
  */
 export const DRAFT_TRADEMARK_PRIVACY_STATEMENT =
-  'Draft Privacy Notice (Pending Legal Finalization): Information submitted through this portal is gathered solely to assess trademark eligibility, determine classification requirements, and structure legal engagement with Mustarred accredited attorneys. Data will not be shared with third parties without your explicit authorization, except as required for statutory registry filings.';
+  'By submitting this form, you acknowledge that Mustarred will use your provided information exclusively for the purpose of facilitating your trademark application. All personal data will be securely processed in strict accordance with the Nigeria Data Protection Act (NDPA) 2023 and GAID 2025.';

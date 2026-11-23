@@ -2159,7 +2159,7 @@ export const TrademarksPage: React.FC = () => {
                                                 type="submit"
                                                 className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-brand-purple hover:bg-brand-purple-hover shadow-xs transition-all"
                                             >
-                                                Get Started →
+                                                Submit my request →
                                             </button>
                                         </div>
                                     </form>
