@@ -23,10 +23,7 @@ export const TalkToUsPage: React.FC = () => {
 
       <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-purple">
-            Inquiries &amp; Specialized Services
-          </span>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-brand-dark mt-1">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-brand-dark">
             Other Services? Talk to Us
           </h1>
           <p className="text-slate-600 text-sm mt-2 leading-relaxed">

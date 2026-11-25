@@ -28,9 +28,6 @@ export const ServicesGrid: React.FC = () => {
               . Select any service to explore compliance criteria.
             </p>
           </div>
-          <div className="text-xs text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200/80 shrink-0 self-start md:self-auto">
-            Note: Single-country frameworks (such as DCMI) are marked accordingly.
-          </div>
         </div>
 
         {/* 4 Registration Cards Grid */}

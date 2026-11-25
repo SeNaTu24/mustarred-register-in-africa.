@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { useCountry } from '../context/CountryContext';
+import { CountryCode } from '../types';
 import AfricaMapGraphic from '../components/cac/graphics/AfricaMapGraphic';
 import { NigeriaFlag, GhanaFlag, KenyaFlag, CoteDIvoireFlag } from '../components/cac/CountryFlags';
 import {
@@ -82,9 +83,22 @@ function ReviewRow({ label, value, multiline }: ReviewRowProps) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
+const mapCountryCodeToCacCountry = (code: CountryCode): CacCountry | null => {
+  switch (code) {
+    case 'NG':
+      return 'nigeria';
+    case 'GH':
+      return 'ghana';
+    case 'KE':
+      return 'kenya';
+    default:
+      return null;
+  }
+};
+
 export const CacPage: React.FC = () => {
   const { navigate } = useNavigation();
-  const { setSelectedCountryCode } = useCountry();
+  const { selectedCountry, setSelectedCountryCode } = useCountry();
 
   // Active country for registration workflow
   const [country, setCountry] = useState<CacCountry | null>(() => {
@@ -94,8 +108,20 @@ export const CacPage: React.FC = () => {
         return param as CacCountry;
       }
     }
-    return null;
+    return mapCountryCodeToCacCountry(selectedCountry.code);
   });
+
+  const isFirstMount = useRef(true);
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    setCountry(mapCountryCodeToCacCountry(selectedCountry.code));
+    setStepIndex(0);
+    setSubmitted(false);
+    setErrors({});
+  }, [selectedCountry.code]);
 
   const [stepIndex, setStepIndex] = useState(0);
   const [formData, setFormData] = useState<CACFormData>(EMPTY_FORM_DATA());
@@ -518,6 +544,32 @@ export const CacPage: React.FC = () => {
             <p className="mt-2 text-center text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
               Select a jurisdiction to begin your step-by-step statutory application
             </p>
+
+            {selectedCountry.code === 'CI' && (
+              <div className="mt-8 p-6 rounded-2xl bg-white border border-brand-purple-border/70 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-left">
+                <div className="space-y-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-brand-purple">
+                    Côte d’Ivoire Selected (CEPICI)
+                  </span>
+                  <p className="text-sm text-slate-700 leading-relaxed">
+                    Online self-service incorporation forms are not yet available for Côte d’Ivoire. Advisory and facilitation are provided directly through CEPICI.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openConsultation(
+                      'Company Registration — Côte d’Ivoire',
+                      'Get in touch with our team regarding company registration in Côte d’Ivoire through CEPICI.',
+                      'ci',
+                    )
+                  }
+                  className="shrink-0 px-5 py-2.5 rounded-xl bg-brand-purple hover:bg-brand-purple-hover text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                >
+                  Request Côte d’Ivoire Consultation →
+                </button>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mt-10">
               {countryCards.map((c) => (

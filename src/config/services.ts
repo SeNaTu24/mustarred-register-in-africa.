@@ -130,9 +130,10 @@ export const REGISTRATION_SERVICES: ServiceItem[] = [
     isJurisdictionSpecific: false,
     countryConfigs: {
       NG: {
-        status: 'consultation_only',
-        statusBadge: 'Advisory Consultation',
-        notes: 'Guidance across sector-specific regulatory bodies and operating permits.',
+        status: 'available',
+        regulatorName: 'Federal Competition and Consumer Protection Commission (FCCPC)',
+        statusBadge: 'Available in Nigeria',
+        notes: 'FCCPC DEON lending licence and facilitator clearance requirements in Nigeria.',
       },
       KE: {
         status: 'consultation_only',

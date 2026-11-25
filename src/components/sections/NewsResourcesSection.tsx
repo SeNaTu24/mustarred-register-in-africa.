@@ -1,9 +1,19 @@
 import React from 'react';
 import { REGULATORY_UPDATES, EDUCATIONAL_GUIDES } from '../../config/resources';
 import { useNavigation } from '../../context/NavigationContext';
+import { useCountry } from '../../context/CountryContext';
+import { CountryFlag } from '../common/CountryFlag';
 
 export const NewsResourcesSection: React.FC = () => {
   const { navigate } = useNavigation();
+  const { selectedCountry } = useCountry();
+
+  const filteredUpdates = REGULATORY_UPDATES.filter(
+    (update) => update.countryCode === selectedCountry.code
+  );
+  const filteredGuides = EDUCATIONAL_GUIDES.filter((guide) =>
+    guide.countryCodes.includes(selectedCountry.code)
+  );
 
   return (
     <section className="py-16 sm:py-24 bg-slate-50/70 border-t border-slate-200/80">
@@ -23,13 +33,17 @@ export const NewsResourcesSection: React.FC = () => {
 
         {/* ── SUBSECTION 1: Regulatory Updates ─────────────────────────────── */}
         <div className="space-y-6 text-left">
-          <div className="border-b border-slate-200/80 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80 pb-3">
             <h3 className="text-lg font-bold text-brand-dark">Regulatory Updates</h3>
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-white px-2.5 py-1 rounded-full border border-slate-200">
+              <CountryFlag code={selectedCountry.code} size="sm" />
+              <span>{selectedCountry.name}</span>
+            </span>
           </div>
 
-          {REGULATORY_UPDATES.length > 0 ? (
+          {filteredUpdates.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {REGULATORY_UPDATES.map((update) => (
+              {filteredUpdates.map((update) => (
                 <div
                   key={update.id}
                   className="flex flex-col justify-between p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-brand-purple/70 hover:shadow-xs transition-all duration-200"
@@ -96,8 +110,13 @@ export const NewsResourcesSection: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="p-8 rounded-2xl bg-white border border-slate-200 text-center">
-              <p className="text-xs text-slate-500">No regulatory updates published yet.</p>
+            <div className="p-8 rounded-2xl bg-white border border-slate-200 text-center space-y-1.5">
+              <p className="text-xs font-semibold text-slate-700">
+                Regulatory updates for {selectedCountry.name} are not yet available.
+              </p>
+              <p className="text-xs text-slate-500">
+                Switch jurisdiction above to view published regulatory circulars for another country, or contact our team for {selectedCountry.name} guidance.
+              </p>
             </div>
           )}
         </div>
@@ -112,13 +131,13 @@ export const NewsResourcesSection: React.FC = () => {
               </p>
             </div>
             <span className="text-xs font-medium text-slate-400 bg-white px-2.5 py-1 rounded-full border border-slate-200">
-              {EDUCATIONAL_GUIDES.length} guides available
+              {filteredGuides.length} {filteredGuides.length === 1 ? 'guide' : 'guides'} available
             </span>
           </div>
 
-          {EDUCATIONAL_GUIDES.length > 0 ? (
+          {filteredGuides.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {EDUCATIONAL_GUIDES.map((guide) => (
+              {filteredGuides.map((guide) => (
                 <div
                   key={guide.id}
                   onClick={() => navigate(guide.internalPath as any)}
@@ -161,7 +180,9 @@ export const NewsResourcesSection: React.FC = () => {
             </div>
           ) : (
             <div className="p-8 rounded-2xl bg-white border border-slate-200 text-center">
-              <p className="text-xs text-slate-500">No guides published yet.</p>
+              <p className="text-xs text-slate-500">
+                Guides and resources for {selectedCountry.name} are not yet available.
+              </p>
             </div>
           )}
         </div>

@@ -8,33 +8,29 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section
-      className="relative overflow-hidden text-center text-white pt-16 pb-20 sm:pt-24 sm:pb-28"
+      className="relative z-20 text-center text-white pt-16 pb-20 sm:pt-24 sm:pb-28"
       style={{
         background: 'radial-gradient(ellipse at 30% 40%, #2a1a4a 0%, #1a0d33 60%, #0d0520 100%)',
       }}
     >
       {/* Mustarred Signature Architectural Radial Watermark */}
-      <div
-        className="hidden md:block pointer-events-none"
-        style={{
-          position: 'absolute',
-          width: '580px',
-          height: '580px',
-          border: '1px solid rgba(164, 159, 231, 0.15)',
-          borderRadius: '50%',
-          right: '-160px',
-          top: '-60px',
-          boxShadow: '0 0 0 80px rgba(164, 159, 231, 0.04), 0 0 0 170px rgba(164, 159, 231, 0.02)',
-        }}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div
+          className="hidden md:block"
+          style={{
+            position: 'absolute',
+            width: '580px',
+            height: '580px',
+            border: '1px solid rgba(164, 159, 231, 0.15)',
+            borderRadius: '50%',
+            right: '-160px',
+            top: '-60px',
+            boxShadow: '0 0 0 80px rgba(164, 159, 231, 0.04), 0 0 0 170px rgba(164, 159, 231, 0.02)',
+          }}
+        />
+      </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Subtle Category Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase text-[#c4baff] bg-white/10 border border-white/15 backdrop-blur-xs mb-6">
-          <span>Pan-African Regulatory &amp; Corporate Platform</span>
-        </div>
-
         {/* Hero Headline (Preserved Exact Copy) */}
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.08] sm:leading-[1.08] mb-6 max-w-4xl mx-auto">
           Register Your Business, Brand &amp; Licences{' '}
@@ -57,22 +53,6 @@ export const HeroSection: React.FC = () => {
               <span>{selectedCountry.name}</span>
             </span>
           </p>
-        </div>
-
-        {/* Subtle Purposeful Value Signals */}
-        <div className="mt-10 pt-8 border-t border-white/10 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs text-[#c5c0e8]/85">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#a49fe7]" />
-            Official Regulatory Alignment
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#a49fe7]" />
-            Multi-Jurisdiction Coverage
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#a49fe7]" />
-            Direct Legal Intake
-          </span>
         </div>
       </div>
     </section>

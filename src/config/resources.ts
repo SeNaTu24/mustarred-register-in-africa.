@@ -4,6 +4,8 @@
  * present within the Register in Africa project.
  */
 
+import { CountryCode } from '../types';
+
 export interface RegulatoryUpdate {
   id: string;
   title: string;
@@ -26,6 +28,7 @@ export interface EducationalGuide {
   internalPath: string;
   tag: string;
   countryName: string;
+  countryCodes: CountryCode[];
 }
 
 export const REGULATORY_UPDATES: RegulatoryUpdate[] = [
@@ -82,6 +85,7 @@ export const EDUCATIONAL_GUIDES: EducationalGuide[] = [
     internalPath: '/cac-registration',
     tag: 'Business Formation',
     countryName: 'Nigeria',
+    countryCodes: ['NG'],
   },
   {
     id: 'trademark-registration-guide',
@@ -92,15 +96,17 @@ export const EDUCATIONAL_GUIDES: EducationalGuide[] = [
     internalPath: '/trademarks',
     tag: 'Intellectual Property',
     countryName: 'Pan-Africa',
+    countryCodes: ['NG', 'KE', 'GH', 'CI'],
   },
   {
     id: 'commercial-licensing-navigator',
     title: 'Commercial Licences & Regulatory Approvals Navigator',
-    scope: 'Nigeria, Ghana, Kenya, Côte d’Ivoire',
+    scope: 'Nigeria (FCCPC DEON)',
     summary:
-      'Structured 5-step guidance for scoping applicable operating permits, statutory share capital minimums, and governing ministerial bodies across 8 economic sectors.',
+      'Structured guidance for scoping lending licence and facilitator clearance requirements under the FCCPC DEON framework.',
     internalPath: '/licences',
     tag: 'Regulatory Licences',
-    countryName: 'Pan-Africa',
+    countryName: 'Nigeria',
+    countryCodes: ['NG'],
   },
 ];
