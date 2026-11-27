@@ -235,3 +235,48 @@ export const DCMI_PROCESS_STEPS: DcmiProcessStep[] = [
       'We follow up with the NDPC until your certificate is issued, deliver it to you, and brief you on your category obligations.',
   },
 ];
+
+export const DCMI_BUSINESS_INFO_CONFIG = {
+  sectionTitle: 'Tell us about your business',
+  questions: [
+    {
+      id: 'operatingDuration' as const,
+      question: '1. How long have you been operating?',
+      options: [
+        'We haven’t started yet',
+        '1 - 3 years',
+        '3 - 8 years',
+        'Above 8 years',
+      ],
+    },
+    {
+      id: 'registrationType' as const,
+      question: '2. How is your business registered?',
+      options: [
+        'Limited liability company',
+        'Partnership',
+        'Incorporated Trustees',
+      ],
+    },
+    {
+      id: 'employeeCount' as const,
+      question: '3. How many employees do you have?',
+      options: [
+        '1 - 10',
+        '10 - 50',
+        '50 - 100',
+        'Above 100',
+      ],
+    },
+    {
+      id: 'operatingLocations' as const,
+      question: '4. Where does your business operate?',
+      options: [
+        'One location',
+        'Multiple locations within the state',
+        'Across multiple Nigerian states',
+        'Nigeria and other countries',
+      ],
+    },
+  ],
+};
