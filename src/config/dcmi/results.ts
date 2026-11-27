@@ -45,3 +45,32 @@ export const DCMI_GET_STARTED_CONFIG = {
   description: 'If you are interested in getting started with the process, let us know.',
   buttonText: 'Get started',
 };
+
+export const DCMI_PAYMENT_AMOUNTS: Record<DcmiCategoryCode, string> = {
+  OHL: '₦300,000',
+  EHL: '₦500,000',
+  UHL: '₦800,000',
+};
+
+export const DCMI_PAYMENT_CONFIG = {
+  heading: 'Complete Your Payment',
+  supportingText: 'Your DCMI assessment is complete. Proceed with payment to continue.',
+  demoBanner: 'DEMO MODE — NO REAL PAYMENT',
+  demoBadge: 'Demo Bank Details (Placeholder Only)',
+  demoNotice:
+    'This is a simulated payment step for demonstration purposes. No real payment is processed or received, and bank details below are demo placeholders.',
+  simulatedConfirmedBanner:
+    'Simulated payment confirmed (Status: simulated_confirmed). This is a demo confirmation only — no real money was received or verified. You may now complete the DCMI registration form.',
+  bankDetails: {
+    bankName: '[Bank Name]',
+    accountName: 'Mustarred Demo Collections',
+    accountNumber: '0000000000',
+  },
+  instructions: [
+    'Transfer the displayed amount to the account above.',
+    'Keep your payment receipt.',
+    'Submit your payment confirmation when the payment verification feature becomes available.',
+  ],
+  confirmButtonText: "I've made the payment",
+  confirmButtonNote: 'Demo simulation — clicking confirms simulated payment and unlocks the registration form.',
+};
