@@ -7,9 +7,6 @@ interface CountrySelectorProps {
   variant?: 'navbar' | 'prominent';
 }
 
-const formatCountryLabel = (name: string, registry?: string) =>
-  registry ? `${name} — ${registry}` : name;
-
 export const CountrySelector: React.FC<CountrySelectorProps> = ({ variant = 'navbar' }) => {
   const { selectedCountry, setSelectedCountryCode, allCountries } = useCountry();
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +43,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({ variant = 'nav
             <CountryFlag code={selectedCountry.code} size="lg" />
             <div className="text-left">
               <span className="block font-semibold text-brand-dark text-base">
-                {formatCountryLabel(selectedCountry.name, selectedCountry.registry)}
+                {selectedCountry.name}
               </span>
               <span className="block text-xs text-brand-muted">
                 {selectedCountry.region} • Requirements adapt to this selection
@@ -87,7 +84,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({ variant = 'nav
                     <div className="flex items-center space-x-3">
                       <CountryFlag code={country.code} size="md" />
                       <div>
-                        <span>{formatCountryLabel(country.name, country.registry)}</span>
+                        <span>{country.name}</span>
                         <span className="block text-xs text-slate-400">{country.region}</span>
                       </div>
                     </div>
@@ -154,7 +151,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({ variant = 'nav
               >
                 <div className="flex items-center space-x-2">
                   <CountryFlag code={country.code} size="sm" />
-                  <span>{formatCountryLabel(country.name, country.registry)}</span>
+                  <span>{country.name}</span>
                 </div>
                 {isSelected && (
                   <svg className="w-3.5 h-3.5 text-brand-purple" fill="currentColor" viewBox="0 0 20 20">

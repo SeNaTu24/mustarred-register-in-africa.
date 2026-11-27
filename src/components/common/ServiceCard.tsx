@@ -2,14 +2,13 @@ import React from 'react';
 import { ServiceItem } from '../../types';
 import { useCountry } from '../../context/CountryContext';
 import { useNavigation } from '../../context/NavigationContext';
-import { CountryFlag } from './CountryFlag';
 
 interface ServiceCardProps {
   service: ServiceItem;
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
-  const { selectedCountry, getServiceConfig } = useCountry();
+  const { getServiceConfig } = useCountry();
   const { navigate } = useNavigation();
   const config = getServiceConfig(service);
 
@@ -59,27 +58,6 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
         <p className="text-sm text-slate-600 leading-relaxed">
           {service.summary}
         </p>
-
-        {/* Country-Specific Context Box */}
-        <div className="pt-2">
-          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 text-xs space-y-1.5">
-            <div className="flex items-center gap-1.5">
-              <CountryFlag code={selectedCountry.code} size="sm" />
-              <span className="font-semibold text-slate-800">
-                {selectedCountry.name} Status:
-              </span>
-            </div>
-            <p className="text-slate-500 leading-relaxed">
-              {config.notes}
-            </p>
-            {config.regulatorName && (
-              <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-200/60 flex items-baseline gap-1">
-                <span className="font-medium text-slate-700">Authority:</span>
-                <span>{config.regulatorName}</span>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Action Footer */}
