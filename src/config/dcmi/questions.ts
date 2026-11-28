@@ -218,21 +218,15 @@ export const DCMI_PROCESS_STEPS: DcmiProcessStep[] = [
   },
   {
     stepNumber: 2,
-    title: 'Professional Verification & Invoice',
+    title: 'NDPC Application Submission',
     description:
-      'Once eligibility is confirmed, you will be directed to a professional. We will send you our invoice and a short questionnaire to gather the information needed for your registration.',
+      'Once we confirm your category and payment, we will prepare your registration application and submit it to the NDPC on your behalf.',
   },
   {
     stepNumber: 3,
-    title: 'NDPC Application Submission',
-    description:
-      'Once we receive your payment and completed questionnaire, we will prepare your registration application and submit it to the NDPC on your behalf.',
-  },
-  {
-    stepNumber: 4,
     title: 'Follow-up & Certificate Issuance',
     description:
-      'We follow up with the NDPC until your certificate is issued, deliver it to you, and brief you on your category obligations.',
+      'We will keep you updated until your certificate is issued, deliver it to you, and brief you on your category obligations.',
   },
 ];
 

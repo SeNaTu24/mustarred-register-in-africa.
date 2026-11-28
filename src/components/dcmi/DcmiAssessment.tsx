@@ -714,7 +714,7 @@ export const DcmiAssessment: React.FC = () => {
                 </button>
               </div>
 
-              {/* Secondary Action: Speak with the team */}
+              {/* Secondary Action: Speak with the team — temporarily commented out
               <div className="pt-4 border-t border-slate-200/80">
                 <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="space-y-1 max-w-lg">
@@ -735,6 +735,7 @@ export const DcmiAssessment: React.FC = () => {
                   </button>
                 </div>
               </div>
+              */}
             </div>
 
             {/* Navigation controls */}
