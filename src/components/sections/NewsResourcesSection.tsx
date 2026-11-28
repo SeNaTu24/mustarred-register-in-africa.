@@ -32,7 +32,7 @@ export const NewsResourcesSection: React.FC = () => {
         </div>
 
         {/* ── SUBSECTION 1: Regulatory Updates ─────────────────────────────── */}
-        <div className="space-y-6 text-left">
+        <div id="news" className="space-y-6 text-left scroll-mt-24">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80 pb-3">
             <h3 className="text-lg font-bold text-brand-dark">Regulatory Updates</h3>
             <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-white px-2.5 py-1 rounded-full border border-slate-200">
@@ -122,7 +122,7 @@ export const NewsResourcesSection: React.FC = () => {
         </div>
 
         {/* ── SUBSECTION 2: Guides & Resources ────────────────────────────── */}
-        <div className="space-y-6 text-left">
+        <div id="resources" className="space-y-6 text-left scroll-mt-24">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80 pb-3">
             <div>
               <h3 className="text-lg font-bold text-brand-dark">Guides &amp; Resources</h3>

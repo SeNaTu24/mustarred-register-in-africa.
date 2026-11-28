@@ -7,14 +7,12 @@ import { AppRoute } from '../../types';
 interface NavItem {
   label: string;
   path: AppRoute;
-  badge?: string;
+  sectionId?: 'news' | 'resources';
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Company Registration', path: '/cac-registration' },
-  { label: 'DCMI', path: '/dcmi' },
-  { label: 'Trademarks', path: '/trademarks' },
-  { label: 'Licences', path: '/licences' },
+  { label: 'News', path: '/', sectionId: 'news' },
+  { label: 'Resources', path: '/', sectionId: 'resources' },
   { label: 'Contact Us', path: '/talk-to-us' },
 ];
 
@@ -22,9 +20,21 @@ export const Navbar: React.FC = () => {
   const { currentRoute, navigate } = useNavigation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleNavClick = (path: AppRoute) => {
-    navigate(path);
+  const handleNavClick = (item: NavItem) => {
     setMobileMenuOpen(false);
+    if (item.sectionId) {
+      const scrollToSection = () => {
+        document.getElementById(item.sectionId!)?.scrollIntoView({ behavior: 'smooth' });
+      };
+      if (currentRoute !== '/') {
+        navigate('/');
+        setTimeout(scrollToSection, 80);
+      } else {
+        scrollToSection();
+      }
+      return;
+    }
+    navigate(item.path);
   };
 
   return (
@@ -35,7 +45,10 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center">
             <button
               type="button"
-              onClick={() => handleNavClick('/')}
+              onClick={() => {
+                navigate('/');
+                setMobileMenuOpen(false);
+              }}
               className="flex items-center text-left focus:outline-none"
               aria-label="Mustarred Home"
             >
@@ -46,12 +59,12 @@ export const Navbar: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {NAV_ITEMS.map((item) => {
-              const isActive = currentRoute === item.path;
+              const isActive = !item.sectionId && currentRoute === item.path;
               return (
                 <button
-                  key={item.path}
+                  key={item.label}
                   type="button"
-                  onClick={() => handleNavClick(item.path)}
+                  onClick={() => handleNavClick(item)}
                   className={`px-3 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                     isActive
                       ? 'bg-brand-purple-light text-brand-purple'
@@ -92,12 +105,12 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
           {NAV_ITEMS.map((item) => {
-            const isActive = currentRoute === item.path;
+            const isActive = !item.sectionId && currentRoute === item.path;
             return (
               <button
-                key={item.path}
+                key={item.label}
                 type="button"
-                onClick={() => handleNavClick(item.path)}
+                onClick={() => handleNavClick(item)}
                 className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-brand-purple-light text-brand-purple font-semibold'
